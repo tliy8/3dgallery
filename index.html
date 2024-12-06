@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Rotating Carousel</title>
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    html, body {
+      height: 100%;
+      touch-action: auto;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      perspective: 1000px;
+      background: #111;
+    }
+
+    #dragBox, #pics {
+      position: relative;
+      display: flex;
+      margin: auto;
+      transform: rotateX(-10deg);
+      transform-style: preserve-3d;
+    }
+
+    #pics {
+      width: 120px;
+      height: 140px;
+      animation: spin 200s infinite linear;
+    }
+
+    #pics img {
+      width: 100%;
+      height: 100%;
+      left: 0;
+      right: 0;
+      box-shadow: 0 0 8px #eaeaea;
+      box-shadow: 1px -1px 6px #666;
+      position: absolute;
+      transform-style: preserve-3d;
+      -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #005);
+    }
+
+    #dragBox img:hover {
+      box-shadow: 0 0 15px #fff;
+    }
+
+    .word {
+      width: 100%;
+      height: 100%;
+    }
+
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="dragBox">
+    <div id="pics">
+      <img src="http://e.hiphotos.baidu.com/image/pic/item/a1ec08fa513d2697e542494057fbb2fb4316d81e.jpg" alt="Image 1">
+      <img src="http://c.hiphotos.baidu.com/image/pic/item/30adcbef76094b36de8a2fe5a1cc7cd98d109d99.jpg" alt="Image 2">
+      <img src="http://g.hiphotos.baidu.com/image/pic/item/6d81800a19d8bc3e770bd00d868ba61ea9d345f2.jpg" alt="Image 3">
+      <img src="./images/1.png" alt="Image 4">
+      <img src="./images/3.png" alt="Image 5">
+      <img src="./images/2.png" alt="Image 6">
+      <img src="./images/1.png" alt="Image 7">
+      <img src="./images/3.png" alt="Image 8">
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      let radius = 240; // Carousel radius
+      const picDom = document.getElementById('pics');
+      const images = picDom.getElementsByTagName('img');
+
+      const len = images.length;
+      const deg = Math.floor(360 / len); // Angle per image
+
+      const init = function (delayTime) {
+        for (let i = 0; i < len; i++) {
+          images[i].style.transform = 'rotateY(' + deg * i + 'deg) translateZ(' + radius + 'px)';
+          images[i].style.transition = "transform 1s";
+          images[i].style.transitionDelay = delayTime || ((len - i) / 4) + "s";
+        }
+      };
+
+      setTimeout(init, 500);
+
+      // Mouse wheel interaction
+      document.onmousewheel = function (e) {
+        e = e || window.event;
+        let d = e.wheelDelta / 20 || -e.detail;
+        radius += d;
+        init(1);
+      };
+    })();
+  </script>
+</body>
+</html>
