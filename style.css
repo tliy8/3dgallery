@@ -1,0 +1,50 @@
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    touch-action: auto;
+  }
+  body {
+    overflow: hidden;
+    display: flex;
+    perspective: 1000px;
+    background: #111;
+  }
+
+
+  #pics {
+    width: 120px;
+    height: 140px;
+    animation: spin 200s infinite linear;
+  }
+
+
+
+  #pics img {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 8px #eaeaea;
+    box-shadow: 1px -1px 6px #666;
+    position: absolute;
+    transform-style: preserve-3d;
+    -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #005);
+  }
+
+  #dragBox img:hover {
+    box-shadow: 0 0 15px #fff;
+  }
+  .word {
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes spin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+  }
