@@ -3,47 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Snoopy</title>
-  <link rel="stylesheet" href="style.css">
+  <title>3D Snoopy </title>
+  <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
 </head>
 <body>
   <div id="dragBox">
     <div id="pics">
-      <a href="love.html"><img src="images/s1.jpg" alt="Image 1"></a>
-      <a href="love.html"><img src="images/s2.jpg" alt="Image 2"></a>
-      <a href="love.html"><img src="images/s3.jpg" alt="Image 3"></a>
-      <a href="love.html"><img src="images/s4.jpg" alt="Image 4"></a>
-      <a href="love.html"><img src="images/s5.jpg" alt="Image 5"></a>
-      <a href="love.html"><img src="images/s6.jpg" alt="Image 6"></a>
-      <a href="love.html"><img src="images/s7.jpg" alt="Image 7"></a>
-      <a href="love.html"><img src="images/s8.jpg" alt="Image 8"></a>
+      <img src="./images/1.jpg" alt="Image 1">
+      <img src="./images/2.jpg" alt="Image 2">
+      <img src="./images/3.jpg" alt="Image 3">
+      <img src="./images/4.jpg" alt="Image 4">
+      <img src="./images/5.jpg" alt="Image 5">
+      <img src="./images/6.jpg" alt="Image 6">
+      <img src="./images/7.jpg" alt="Image 7">
+      <img src="./images/8.jpg" alt="Image 8">
     </div>
   </div>
 
   <script>
     (function () {
-      const radius = 200; // Radius of the carousel
-      const picDom = document.getElementById('pics');
-      const images = picDom.querySelectorAll('img'); // Select all img elements
-      const totalImages = images.length;
-      const angle = 360 / totalImages; // Angle between each image
+  let radius = 240; // Carousel radius
+  const picDom = document.getElementById('pics');
+  const elements = Array.from(picDom.children); // Get all direct children of #pics (images and <a>)
 
-      // Position images in a circular layout
-      images.forEach((img, index) => {
-        const theta = angle * index; // Calculate angle for each image
-        img.style.transform = `
-          rotateY(${theta}deg) 
-          translateZ(${radius}px)
-        `;
-      });
+  const len = elements.length;
+  const deg = Math.floor(360 / len); // Angle per element
 
-      // Enable mouse wheel interaction to adjust carousel radius
-      let currentRotation = 0;
-      document.addEventListener("wheel", (e) => {
-        currentRotation += e.deltaY * 0.01;
-        picDom.style.transform = `rotateY(${currentRotation}deg)`;
-      });
-    })();
+  const init = function (delayTime) {
+    for (let i = 0; i < len; i++) {
+      elements[i].style.transform = `rotateY(${deg * i}deg) translateZ(${radius}px)`;
+      elements[i].style.transition = "transform 1s";
+      elements[i].style.transitionDelay = delayTime || ((len - i) / 4) + "s";
+    }
+  };
+
+  setTimeout(init, 500);
+
+  // Mouse wheel interaction
+  document.onmousewheel = function (e) {
+    e = e || window.event;
+    let d = e.wheelDelta / 20 || -e.detail;
+    radius += d;
+    init(1);
+  };
+})();
   </script>
 </body>
 </html>
