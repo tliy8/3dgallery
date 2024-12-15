@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Snoopy </title>
+  <title>3D Snoopy</title>
   <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
 </head>
 <body>
@@ -19,50 +19,70 @@
       <img src="./images/8.jpg" alt="Image 8">
     </div>
   </div>
-<!-- Meta Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1496754667677515');
-  fbq('track', 'PageView');
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1496754667677515');  // Your Pixel ID
+    fbq('track', 'PageView');  // Track the page view
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1496754667677515&ev=PageView&noscript=1"
-  /></noscript>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1496754667677515&ev=PageView&noscript=1" />
+  </noscript>
   <!-- End Meta Pixel Code -->
+
   <script>
     (function () {
-  let radius = 240; // Carousel radius
-  const picDom = document.getElementById('pics');
-  const elements = Array.from(picDom.children); // Get all direct children of #pics (images and <a>)
+      let radius = 240; // Carousel radius
+      const picDom = document.getElementById('pics');
+      const elements = Array.from(picDom.children); // Get all direct children of #pics (images)
 
-  const len = elements.length;
-  const deg = Math.floor(360 / len); // Angle per element
+      const len = elements.length;
+      const deg = Math.floor(360 / len); // Angle per element
 
-  const init = function (delayTime) {
-    for (let i = 0; i < len; i++) {
-      elements[i].style.transform = `rotateY(${deg * i}deg) translateZ(${radius}px)`;
-      elements[i].style.transition = "transform 1s";
-      elements[i].style.transitionDelay = delayTime || ((len - i) / 4) + "s";
-    }
-  };
+      const init = function (delayTime) {
+        for (let i = 0; i < len; i++) {
+          elements[i].style.transform = `rotateY(${deg * i}deg) translateZ(${radius}px)`;
+          elements[i].style.transition = "transform 1s";
+          elements[i].style.transitionDelay = delayTime || ((len - i) / 4) + "s";
+        }
+      };
 
-  setTimeout(init, 500);
+      setTimeout(init, 500);
 
-  // Mouse wheel interaction
-  document.onmousewheel = function (e) {
-    e = e || window.event;
-    let d = e.wheelDelta / 20 || -e.detail;
-    radius += d;
-    init(1);
-  };
-})();
+      // Mouse wheel interaction
+      document.onmousewheel = function (e) {
+        e = e || window.event;
+        let d = e.wheelDelta / 20 || -e.detail;
+        radius += d;
+        init(1);
+
+        // Track the event with Meta Pixel (User scrolling on carousel)
+        fbq('trackCustom', 'CarouselInteraction', {
+          action: 'UserScrolled',
+          radius: radius,
+        });
+      };
+
+      // Track clicks on each image
+      const images = document.querySelectorAll('#pics img');
+      images.forEach((img, index) => {
+        img.addEventListener('click', () => {
+          fbq('trackCustom', 'ImageClick', {
+            imageIndex: index + 1,  // Index of the clicked image
+            imageSrc: img.src,      // Image source URL
+          });
+        });
+      });
+    })();
   </script>
 </body>
 </html>
